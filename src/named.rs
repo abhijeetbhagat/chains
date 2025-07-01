@@ -1917,39 +1917,6 @@ impl NamedChain {
         Some(addr)
     }
 
-    /// Returns the address of the [Enscribe](https://github.com/enscribexyz/enscribe-contracts/blob/main/src/main/solidity/Enscribe.sol) contract, if it exists.
-    ///
-    /// The Enscribe contract can deploy a contract and set an ENS name for it.
-    ///
-    /// Example:
-    ///
-    /// ```
-    /// use alloy_chains::NamedChain;
-    /// use alloy_primitives::address;
-    ///
-    /// let chain = NamedChain::Mainnet;
-    /// assert_eq!(
-    ///     chain.enscribe_address(),
-    ///     Some(address!("0xd14360d477ef49182b5141952fe67b007688725a"))
-    /// );
-    /// ```
-    pub const fn enscribe_address(self) -> Option<Address> {
-        use NamedChain::*;
-
-        let addr = match self {
-            Mainnet => address!("0xd14360d477ef49182b5141952fe67b007688725a"),
-            Sepolia => address!("0x98350BfB3ba627B18CC84c8A46440A2E3f74d6a7"),
-            Linea => address!("0x6d8Ac46BFC1bD0b6022f997108e9800Fd84fdD44"),
-            LineaSepolia => address!("0x564708c1f36ed9109736fd1d10c575ee4eeadbbd"),
-            Base => address!("0x8429c428F93754449C4b955F2Ae9fde17eF4e95a"),
-            BaseSepolia => address!("0x3b854b093A4F60aB7C9635c2b84d015BC2359B2a"),
-            AnvilHardhat => address!("0x0165878A594ca255338adfa4d48449f69242Eb8F"),
-            _ => return None,
-        };
-
-        Some(addr)
-    }
-
     /// Returns the address of the [ENS Registry](https://github.com/ensdomains/ens-contracts/blob/c7336637ce56187c40c060d0819bb3cce5c45ba6/contracts/registry/ENSRegistry.sol), if it exists.
     ///
     /// The registry maintains a list of domains, recording the owner, resolver, and TTL for each, and allows the owner of a domain to make changes to that data. [More info](https://docs.ens.domains/registry/ens)
@@ -2077,36 +2044,6 @@ impl NamedChain {
         };
 
         Some(addr)
-    }
-
-    /// Returns the parent name configured, if it exists.
-    ///
-    /// This is the default parent domain available on chains supporting ENS and can be used to create subnames under them if the user doesn't have their own domains created.
-    ///
-    /// Example:
-    ///
-    /// ```
-    /// use alloy_chains::NamedChain;
-    /// use alloy_primitives::address;
-    ///
-    /// let chain = NamedChain::Mainnet;
-    /// assert_eq!(chain.parent_name(), Some("deployd.eth".to_owned()));
-    /// ```
-    pub fn parent_name(self) -> Option<String> {
-        use NamedChain::*;
-
-        let parent_name = match self {
-            Mainnet => "deployd.eth",
-            Sepolia => "testapp.eth",
-            Linea => "deployd.linea.eth",
-            LineaSepolia => "repo.enscribe.linea-sepolia.eth",
-            Base => "deployd.base.eth",
-            BaseSepolia => "testapp.basetest.eth",
-            AnvilHardhat => "forge.eth",
-            _ => return None,
-        };
-
-        Some(parent_name.to_owned())
     }
 }
 
