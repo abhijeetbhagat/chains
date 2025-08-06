@@ -1,10 +1,9 @@
-use alloy_primitives::{address, Address};
+use alloy_primitives::{Address, address};
 use core::{cmp::Ordering, fmt, time::Duration};
 use num_enum::TryFromPrimitiveError;
 
 #[allow(unused_imports)]
 use alloc::string::String;
-use crate::NamedChain::AnvilHardhat;
 // When adding a new chain:
 //   1. add new variant to the NamedChain enum;
 //   2. add extra information in the last `impl` block (explorer URLs, block time) when applicable;
@@ -1911,104 +1910,6 @@ impl NamedChain {
             ZkSync => address!("5aea5775959fbc2557cc8789bc1bf90a239d9a91"),
             Sophon => address!("f1f9e08a0818594fde4713ae0db1e46672ca960e"),
             Rsk => address!("967f8799af07df1534d48a95a5c9febe92c53ae0"),
-            _ => return None,
-        };
-
-        Some(addr)
-    }
-
-    /// Returns the address of the [ENS Registry](https://github.com/ensdomains/ens-contracts/blob/c7336637ce56187c40c060d0819bb3cce5c45ba6/contracts/registry/ENSRegistry.sol), if it exists.
-    ///
-    /// The registry maintains a list of domains, recording the owner, resolver, and TTL for each, and allows the owner of a domain to make changes to that data. [More info](https://docs.ens.domains/registry/ens)
-    ///
-    /// Example:
-    ///
-    /// ```
-    /// use alloy_chains::NamedChain;
-    /// use alloy_primitives::address;
-    ///
-    /// let chain = NamedChain::Mainnet;
-    /// assert_eq!(
-    ///     chain.ens_registry_address(),
-    ///     Some(address!("0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"))
-    /// );
-    /// ```
-    pub const fn ens_registry_address(self) -> Option<Address> {
-        use NamedChain::*;
-
-        let addr = match self {
-            Mainnet | Sepolia => address!("0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"),
-            Linea => address!("0x50130b669B28C339991d8676FA73CF122a121267"),
-            LineaSepolia => address!("0x5B2636F0f2137B4aE722C01dd5122D7d3e9541f7"),
-            Base => address!("0xB94704422c2a1E396835A571837Aa5AE53285a95"),
-            BaseSepolia => address!("0x1493b2567056c2181630115660963E13A8E32735"),
-            AnvilHardhat => address!("0x5FbDB2315678afecb367f032d93F642f64180aa3"),
-            _ => return None,
-        };
-
-        Some(addr)
-    }
-
-    /// Returns the address of the [ENS Reverse Registrar](https://github.com/ensdomains/ens-contracts/blob/c7336637ce56187c40c060d0819bb3cce5c45ba6/contracts/reverseRegistrar/ReverseRegistrar.sol), if it exists.
-    ///
-    /// The ENS Reverse registrar is responsible for helping with reverse lookups (mapping from an eth address to an ENS name). [More info](https://docs.ens.domains/registry/reverse)
-    ///
-    /// Example:
-    ///
-    /// ```
-    /// use alloy_chains::NamedChain;
-    /// use alloy_primitives::address;
-    ///
-    /// let chain = NamedChain::Mainnet;
-    /// assert_eq!(
-    ///     chain.reverse_registrar_address(),
-    ///     Some(address!("0xa58E81fe9b61B5c3fE2AFD33CF304c454AbFc7Cb"))
-    /// );
-    /// ```
-    pub const fn reverse_registrar_address(self) -> Option<Address> {
-        use NamedChain::*;
-
-        let addr = match self {
-            Mainnet => address!("0xa58E81fe9b61B5c3fE2AFD33CF304c454AbFc7Cb"),
-            Sepolia => address!("0xCF75B92126B02C9811d8c632144288a3eb84afC8"),
-            Linea => address!("0x08D3fF6E65f680844fd2465393ff6f0d742b67D5"),
-            LineaSepolia => address!("0x4aAA964D8EB65508ca3DA3b0A3C060c16059E613"),
-            Base => address!("0x79EA96012eEa67A83431F1701B3dFf7e37F9E282"),
-            BaseSepolia => address!("0xa0A8401ECF248a9375a0a71C4dedc263dA18dCd7"),
-            AnvilHardhat => address!("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"),
-            _ => return None,
-        };
-
-        Some(addr)
-    }
-
-    /// Returns the address of the [ENS Public Resolver](https://github.com/ensdomains/ens-contracts/blob/c7336637ce56187c40c060d0819bb3cce5c45ba6/contracts/resolvers/PublicResolver.sol), if it exists.
-    ///
-    /// The ENS public resolver permits the owner of a name to update their records, includes permissions, and stores its data on layer-1 ethereum. [More info](https://docs.ens.domains/resolvers/public)
-    ///
-    /// Example:
-    ///
-    /// ```
-    /// use alloy_chains::NamedChain;
-    /// use alloy_primitives::address;
-    ///
-    /// let chain = NamedChain::Mainnet;
-    /// assert_eq!(
-    ///     chain.public_resolver_address(),
-    ///     Some(address!("0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63"))
-    /// );
-    /// ```
-    pub const fn public_resolver_address(self) -> Option<Address> {
-        use NamedChain::*;
-
-        let addr = match self {
-            Mainnet => address!("0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63"),
-            Sepolia => address!("0x8948458626811dd0c23EB25Cc74291247077cC51"),
-            Linea => address!("0x86c5AED9F27837074612288610fB98ccC1733126"),
-            LineaSepolia => address!("0xA2008916Ed2d7ED0Ecd747a8a5309267e42cf1f1"),
-            Base => address!("0xC6d566A56A1aFf6508b41f6c90ff131615583BCD"),
-            BaseSepolia => address!("0x6533C94869D28fAA8dF77cc63f9e2b2D6Cf77eBA"),
-            AnvilHardhat => address!("0x9A676e781A523b5d0C0e43731313A708CB607508"),
             _ => return None,
         };
 
